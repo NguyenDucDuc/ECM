@@ -5,7 +5,7 @@ import { Server, Socket } from 'socket.io';
 import { RedisService } from 'src/core/cache/redis/redis.service';
 import { GatewayService } from './gateway.service';
 
-@WebSocketGateway(8080, { cors: { origin: '*' } })
+@WebSocketGateway(8088, { cors: { origin: '*' } })
 export class GatewayGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
   private logger = new Logger('GatewayService');
