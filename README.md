@@ -1,5 +1,22 @@
-<!-- npm run start:dev -->
+<!-- start -->
+npm run start:dev
 
+<!-- 
+checkout qua main
+kéo code mới về
+xong về lại nhánh nhật
+merge main vào 
+-->
+git checkout main
+git pull origin main
+git checkout nhat
+git merge main
+# tiếp tục code...
+git add .
+git commit -m "..."
+git push origin nhat
+
+<!-- --- -->
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>

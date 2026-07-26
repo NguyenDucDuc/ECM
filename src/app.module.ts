@@ -7,6 +7,7 @@ import { LoggerMiddleware } from './core/middlewares/logger.middleware';
 import { AuthModule } from './modules/auth/auth.module';
 import { GatewayModule } from './modules/gateway/gateway.module';
 import { UsersModule } from './modules/users/users.module';
+import { CategoriesModule } from './modules/categories/categories.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { UsersModule } from './modules/users/users.module';
     RedisModule,
     AuthModule,
     GatewayModule,
+    CategoriesModule,
   ],
 })
 export class AppModule implements NestModule {
