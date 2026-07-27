@@ -61,20 +61,19 @@ export class UsersService extends BaseService<UserDocument> {
     return paginateResult;
   }
 
-  async createUser(createUserDto: CreateUserDto): Promise<UserDocument> {
-
+  async createUser(body: CreateUserDto): Promise<UserDocument> {
     const exist = await this.usersRepository.findOne({
-      email: createUserDto.email,
+      email: body.email,
     })
 
     if (exist) {
-      throw new BadRequestException('Email already exists');
+      throw new BadRequestException('Email đã tồn tại!');
     }
 
-    const hashedPassword = await bcrypt.hash(createUserDto.password, DEFAULT_SALT);
+    const hashedPassword = await bcrypt.hash(body.password, DEFAULT_SALT);
 
     const user = await this.create({
-      ...createUserDto,
+      ...body,
       password: hashedPassword,
     })
 
