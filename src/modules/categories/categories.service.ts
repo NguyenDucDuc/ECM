@@ -39,10 +39,6 @@ export class CategoriesService extends BaseService<CategoryDocument> {
     return result;
   }
 
-  // async findCategoryById(id: string) {
-  //   return this.findOne({ _id: id, deletedAt: undefined });
-  // }
-
   async findCategoryById(id: string) {
     const category = await this.categoriesRepository.findOne({ _id: id, deletedAt: undefined });
     if (!category) throw new NotFoundException('Category not found');
@@ -50,7 +46,6 @@ export class CategoriesService extends BaseService<CategoryDocument> {
   }
 
   async createCategory(body: CreateCategoryDto) {
-    // const category = await this.create(body);
     const category = await this.categoriesRepository.create({
       ...body,
       parent_id: body.parent_id
@@ -62,7 +57,6 @@ export class CategoriesService extends BaseService<CategoryDocument> {
   }
 
   async updateCategory(id: string, body: UpdateCategoryDto) {
-    // const category = await this.update(id, body);
     const category = await this.categoriesRepository.update(id, {
       ...body,
       parent_id: body.parent_id
