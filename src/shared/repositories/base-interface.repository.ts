@@ -34,4 +34,5 @@ export interface IBaseRepository<T extends Document> {
   softDelete(id: string, options?: RepositoryOptions): Promise<boolean>;
   permanentlyDelete(id: string, options?: RepositoryOptions): Promise<boolean>;
   aggregate<R>(pipeline: PipelineStage[], options?: RepositoryOptions): Promise<R[]>;
+  hardDelete(id: string, options?: RepositoryOptions): Promise<boolean>;
 }
