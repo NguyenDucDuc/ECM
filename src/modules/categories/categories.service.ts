@@ -40,35 +40,49 @@ export class CategoriesService extends BaseService<CategoryDocument> {
   }
 
   async findCategoryById(id: string) {
-    const category = await this.categoriesRepository.findOne({ _id: id, deletedAt: undefined });
+    const category = await this.findOne({ _id: id, deletedAt: undefined });
     if (!category) throw new NotFoundException('Category not found');
     return category;
   }
 
-  async createCategory(body: CreateCategoryDto) {
-    const category = await this.categoriesRepository.create({
-      ...body,
-      parent_id: body.parent_id
-        ? new Types.ObjectId(body.parent_id)
-        : null,
+  private async validateParentCategory(parentId?: string) {
+    if (!parentId) return undefined;
+
+    const parent = await this.findOne({
+      _id: parentId,
+      deletedAt: undefined,
     });
+
+    if (!parent) {
+      throw new NotFoundException('Parent category not found');
+    }
+
+    return new Types.ObjectId(parentId);
+  }
+
+  async createCategory(body: CreateCategoryDto) {
+    const category = await this.create({
+      ...body,
+      parent_id: await this.validateParentCategory(body.parent_id),
+    });
+
     await this.cacheService.delByPattern('categories:list:*');
     return category;
   }
 
   async updateCategory(id: string, body: UpdateCategoryDto) {
-    const category = await this.categoriesRepository.update(id, {
+    const category = await this.update(id, {
       ...body,
-      parent_id: body.parent_id
-        ? new Types.ObjectId(body.parent_id)
-        : null,
+      parent_id: await this.validateParentCategory(body.parent_id),
     });
+
     await this.cacheService.delByPattern('categories:list:*');
     return category;
   }
 
   async deleteCategory(id: string) {
-    const category = await this.categoriesRepository.softDelete(id);
+    const category = await this.hardDelete(id);
+
     await this.cacheService.delByPattern('categories:list:*');
     return category;
   }
