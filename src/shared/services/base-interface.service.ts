@@ -1,5 +1,5 @@
-import { QueryFilter, UpdateQuery, Document, PipelineStage } from 'mongoose';
-import { RepositoryOptions, FindAllOptions, PaginatedResult } from '../repositories/base-interface.repository';
+import { Document, PipelineStage, QueryFilter, UpdateQuery } from 'mongoose';
+import { FindAllOptions, PaginatedResult, RepositoryOptions } from '../repositories/base-interface.repository';
 
 export interface IBaseService<T extends Document> {
   create(dto: Partial<T>, options?: RepositoryOptions): Promise<T>;
@@ -9,6 +9,7 @@ export interface IBaseService<T extends Document> {
   findAll(filter?: QueryFilter<T>, options?: FindAllOptions): Promise<T[]>;
   update(id: string, update: UpdateQuery<T>, options?: RepositoryOptions): Promise<T | null>;
   softDelete(id: string, options?: RepositoryOptions): Promise<boolean>;
+  hardDelete(id: string, options?: RepositoryOptions): Promise<boolean>;
   permanentlyDelete(id: string, options?: RepositoryOptions): Promise<boolean>;
   aggregate<R>(pipeline: PipelineStage[], options?: RepositoryOptions): Promise<R[]>;
 }

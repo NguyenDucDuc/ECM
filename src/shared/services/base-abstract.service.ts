@@ -1,15 +1,18 @@
 // src/services/base.abstract.service.ts
 import { Document, PipelineStage, QueryFilter, UpdateQuery } from 'mongoose';
 import {
-  IBaseRepository,
-  RepositoryOptions,
-  FindAllOptions,
-  PaginatedResult,
+    FindAllOptions,
+    IBaseRepository,
+    PaginatedResult,
+    RepositoryOptions,
 } from '../repositories/base-interface.repository';
 import { IBaseService } from './base-interface.service';
 
 export abstract class BaseService<T extends Document> implements IBaseService<T> {
   protected constructor(protected readonly repository: IBaseRepository<T>) {}
+    async hardDelete(id: string, options?: RepositoryOptions): Promise<boolean> {
+        return this.repository.hardDelete(id, options);
+    }
 
   async create(dto: Partial<T>, options?: RepositoryOptions): Promise<T> {
     return this.repository.create(dto, options);

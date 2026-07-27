@@ -4,6 +4,9 @@ import { FindAllOptions, IBaseRepository, PaginatedResult, RepositoryOptions } f
 
 export abstract class BaseRepository<T extends Document> implements IBaseRepository<T> {
   protected constructor(protected readonly model: Model<T>) {}
+    async hardDelete(id: string, options?: RepositoryOptions): Promise<boolean> {
+        return this.model.findByIdAndDelete(id, {session: options.session});
+    }
 
   async create(dto: Partial<T>, options?: RepositoryOptions): Promise<T> {
     const createdEntity = new this.model(dto);
@@ -99,6 +102,7 @@ export abstract class BaseRepository<T extends Document> implements IBaseReposit
       .exec();
     return result !== null;
   }
+
 
   async permanentlyDelete(id: string, options?: RepositoryOptions): Promise<boolean> {
     const result = await this.model
