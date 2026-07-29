@@ -1,20 +1,20 @@
-<!-- start -->
+```bash
+# Start
 npm run start:dev
 
-<!-- 
-checkout qua main
-kéo code mới về
-xong về lại nhánh nhật
-merge main vào 
--->
+# Sync with main
 git checkout main
 git pull origin main
 git checkout nhat
 git merge main
-# tiếp tục code...
+
+# Code...
+
+# Commit & Push
 git add .
-git commit -m "..."
+git commit -m "message"
 git push origin nhat
+```
 
 <!-- --- -->
 <p align="center">

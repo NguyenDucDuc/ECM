@@ -3,10 +3,20 @@ import { DEFAULT_LIMIT, DEFAULT_PAGE } from 'src/shared/constants/paginate.const
 import { FindAllOptions, IBaseRepository, PaginatedResult, RepositoryOptions } from './base-interface.repository';
 
 export abstract class BaseRepository<T extends Document> implements IBaseRepository<T> {
-  protected constructor(protected readonly model: Model<T>) {}
-    async hardDelete(id: string, options?: RepositoryOptions): Promise<boolean> {
-        return this.model.findByIdAndDelete(id, {session: options.session});
-    }
+  protected constructor(protected readonly model: Model<T>) { }
+
+  // async hardDelete(id: string, options?: RepositoryOptions): Promise<boolean> {
+  //   return this.model.findByIdAndDelete(id, { session: options.session });
+  // }
+  async hardDelete(id: string, options?: RepositoryOptions): Promise<boolean> {
+    const result = await this.model
+      .findByIdAndDelete(id, {
+        session: options?.session,
+      })
+      .exec();
+
+    return result !== null;
+  }
 
   async create(dto: Partial<T>, options?: RepositoryOptions): Promise<T> {
     const createdEntity = new this.model(dto);
