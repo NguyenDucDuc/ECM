@@ -7,7 +7,7 @@ export type UserDocument = User & Document;
 export class User {
 
   @Prop({ required: true })
-  full_name: string
+  fullName: string
 
   @Prop({ required: true, unique: true })
   email: string

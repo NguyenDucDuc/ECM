@@ -63,7 +63,7 @@ export class CategoriesService extends BaseService<CategoryDocument> {
   async createCategory(body: CreateCategoryDto) {
     const category = await this.create({
       ...body,
-      parent_id: await this.validateParentCategory(body.parent_id),
+      parentId: await this.validateParentCategory(body.parentId),
     });
 
     await this.cacheService.delByPattern('categories:list:*');
@@ -73,7 +73,7 @@ export class CategoriesService extends BaseService<CategoryDocument> {
   async updateCategory(id: string, body: UpdateCategoryDto) {
     const category = await this.update(id, {
       ...body,
-      parent_id: await this.validateParentCategory(body.parent_id),
+      parentId: await this.validateParentCategory(body.parentId),
     });
 
     await this.cacheService.delByPattern('categories:list:*');
