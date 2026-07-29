@@ -10,11 +10,11 @@ import { DEFAULT_SALT } from 'src/shared/constants/security.constant';
 import { parseSortQuery } from 'src/shared/helpers/sort.helper';
 import { PaginatedResult } from 'src/shared/repositories/base-interface.repository';
 import { BaseService } from '../../shared/services/base-abstract.service';
+import { CreateUserDto } from './dto/create-user.dto';
 import { GetUsersQueryDto } from './dto/get-user.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { UserDocument } from './schema/user.schema';
 import { UsersRepository } from './user.repository';
-import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UsersService extends BaseService<UserDocument> {
