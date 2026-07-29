@@ -26,7 +26,7 @@ export class AuthService {
       throw new UnauthorizedException('Email hoặc mật khẩu không chính xác');
     }
 
-    const payload = { sub: user._id, email: user.email };
+    const payload = { sub: user._id, email: user.email, role: user.role };
 
     // 4. Ký token (Kịch bản thực tế sẽ sinh cả Access Token và Refresh Token)
     const accessToken = this.jwtService.sign(payload, {
@@ -44,6 +44,7 @@ export class AuthService {
         id: user._id,
         email: user.email,
         full_name: user.full_name,
+        role: user.role,
       },
       accessToken,
       refreshToken,
