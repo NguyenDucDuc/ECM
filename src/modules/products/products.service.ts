@@ -41,10 +41,26 @@ export class ProductsService extends BaseService<ProductDocument> {
       deletedAt: undefined,
     };
 
-    if (search) {
+    // if (search) {
+    //   filter.$or = [
+    //     { name: { $regex: search, $options: 'i' } },
+    //     { slug: { $regex: search, $options: 'i' } },
+    //   ];
+    // }
+    if (search?.trim()) {
+      const terms = search
+        .trim()
+        .split(/\s+/)
+        .map(term => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+
+      const regex = new RegExp(
+        terms.map(term => `(?=.*${term})`).join(''),
+        'i',
+      );
+
       filter.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { slug: { $regex: search, $options: 'i' } },
+        { name: regex },
+        { slug: regex },
       ];
     }
 
