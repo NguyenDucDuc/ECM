@@ -47,20 +47,61 @@ export class ProductsService extends BaseService<ProductDocument> {
     //     { slug: { $regex: search, $options: 'i' } },
     //   ];
     // }
+
     if (search?.trim()) {
+      const vietnameseMap: Record<string, string> = {
+        a: '[aàáạảãâầấậẩẫăằắặẳẵ]',
+        e: '[eèéẹẻẽêềếệểễ]',
+        i: '[iìíịỉĩ]',
+        o: '[oòóọỏõôồốộổỗơờớợởỡ]',
+        u: '[uùúụủũưừứựửữ]',
+        y: '[yỳýỵỷỹ]',
+        d: '[dđ]',
+      };
+
       const terms = search
         .trim()
+        .toLowerCase()
         .split(/\s+/)
-        .map(term => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+        .map(term =>
+          term
+            .split('')
+            .map(ch => vietnameseMap[ch] ?? ch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+            .join(''),
+        );
+
+      // const terms = search
+      //   .trim()
+      //   .split(/\s+/)
+      //   .map(term => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
 
       const regex = new RegExp(
         terms.map(term => `(?=.*${term})`).join(''),
         'i',
       );
 
+      // filter.$or = [
+      //   { name: regex },
+      //   { slug: regex },
+      // ];
+      
       filter.$or = [
         { name: regex },
         { slug: regex },
+        {
+          $expr: {
+            $regexMatch: {
+              input: {
+                $replaceAll: {
+                  input: '$name',
+                  find: ' ',
+                  replacement: '',
+                },
+              },
+              regex: regex,
+            },
+          },
+        },
       ];
     }
 
