@@ -27,8 +27,8 @@ export class CreateCategoryDto {
   })
   @Transform(({ value }) => value === '' ? undefined : value)
   @IsOptional()
-  @IsMongoId({ message: 'parent_id không hợp lệ' })
-  parent_id?: string;
+  @IsMongoId({ message: 'parentId không hợp lệ' })
+  parentId?: string;
 
   @ApiProperty({
     example: '6884c4e8e5b3e4e2a6d6b111/6884c4e8e5b3e4e2a6d6b123',

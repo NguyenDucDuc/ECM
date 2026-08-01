@@ -17,7 +17,7 @@ export class Category {
     ref: 'Category',
     default: null,
   })
-  parent_id: mongoose.Types.ObjectId
+  parentId: mongoose.Types.ObjectId
 
   @Prop()
   path: string
