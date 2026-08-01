@@ -60,16 +60,6 @@ export class ProductsService extends BaseService<ProductDocument> {
           .replace(/đ/g, 'd')
           .replace(/Đ/g, 'D');
 
-      // const terms = search
-      //   .trim()
-      //   .toLowerCase()
-      //   .split(/\s+/)
-      //   .map(term =>
-      //     term
-      //       .split('')
-      //       .map(ch => vietnameseMap[ch] ?? ch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
-      //       .join(''),
-      //   );
       const terms = normalize(search)
         .trim()
         .toLowerCase()
