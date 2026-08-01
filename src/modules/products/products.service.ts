@@ -41,25 +41,36 @@ export class ProductsService extends BaseService<ProductDocument> {
       deletedAt: undefined,
     };
 
-    // if (search) {
-    //   filter.$or = [
-    //     { name: { $regex: search, $options: 'i' } },
-    //     { slug: { $regex: search, $options: 'i' } },
-    //   ];
-    // }
-
+    //search
     if (search?.trim()) {
       const vietnameseMap: Record<string, string> = {
-        a: '[aàáạảãâầấậẩẫăằắặẳẵ]',
-        e: '[eèéẹẻẽêềếệểễ]',
-        i: '[iìíịỉĩ]',
-        o: '[oòóọỏõôồốộổỗơờớợởỡ]',
-        u: '[uùúụủũưừứựửữ]',
-        y: '[yỳýỵỷỹ]',
-        d: '[dđ]',
+        a: '[aAàÀáÁạẠảẢãÃâÂầẦấẤậẬẩẨẫẪăĂằẰắẮặẶẳẲẵẴ]',
+        e: '[eEèÈéÉẹẸẻẺẽẼêÊềỀếẾệỆểỂễỄ]',
+        i: '[iIìÌíÍịỊỉỈĩĨ]',
+        o: '[oOòÒóÓọỌỏỎõÕôÔồỒốỐộỘổỔỗỖơƠờỜớỚợỢởỞỡỠ]',
+        u: '[uUùÙúÚụỤủỦũŨưƯừỪứỨựỰửỬữỮ]',
+        y: '[yYỳỲýÝỵỴỷỶỹỸ]',
+        d: '[dDđĐ]',
       };
 
-      const terms = search
+      const normalize = (str: string) =>
+        str
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/đ/g, 'd')
+          .replace(/Đ/g, 'D');
+
+      // const terms = search
+      //   .trim()
+      //   .toLowerCase()
+      //   .split(/\s+/)
+      //   .map(term =>
+      //     term
+      //       .split('')
+      //       .map(ch => vietnameseMap[ch] ?? ch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+      //       .join(''),
+      //   );
+      const terms = normalize(search)
         .trim()
         .toLowerCase()
         .split(/\s+/)
@@ -70,21 +81,11 @@ export class ProductsService extends BaseService<ProductDocument> {
             .join(''),
         );
 
-      // const terms = search
-      //   .trim()
-      //   .split(/\s+/)
-      //   .map(term => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-
       const regex = new RegExp(
         terms.map(term => `(?=.*${term})`).join(''),
         'i',
       );
 
-      // filter.$or = [
-      //   { name: regex },
-      //   { slug: regex },
-      // ];
-      
       filter.$or = [
         { name: regex },
         { slug: regex },
@@ -105,6 +106,7 @@ export class ProductsService extends BaseService<ProductDocument> {
       ];
     }
 
+    //
     if (categoryId) {
       filter.categoryId = new Types.ObjectId(categoryId);
     }
